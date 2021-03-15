@@ -66,7 +66,7 @@ function generatePassword() {
 
   //Get required criteria & make up password with these requirements.
   var criteriaSelected = getCriteriaSelection();
-  useRequiredCriteria(criteriaSelected);
+  makePwdWithRequiredCriteria(criteriaSelected);
   
   //fill the rest of the password with random characters in the selection criteria.
   for(var i = criteriaSelected.length; i < password.length; i++) {
@@ -76,26 +76,37 @@ function generatePassword() {
   return password.generatedPwd;
 }
 
+//Asks user for password crtieria
+function promptPasswordCriteria() {
+  password.hasLowerCase = window.confirm("Password to contain lowercase?");
+  password.hasUpperCase = window.confirm("Password to contain upper case?");
+  password.hasSymbols = window.confirm("Password to contain symbols?");
+  password.hasNumbers = window.confirm("Password to contain numbers?");
+}
+
+//Creates the first few letters of password with required criteria
+function makePwdWithRequiredCriteria(criteriaSelected) {
+  for(var i = 0; i < criteriaSelected.length; i++ ) {
+    var criteriaName = criteriaSelected[i];
+    var criteriaValues = selections[criteriaName];
+
+    var randomIdx = getRandomNumber(criteriaValues.length);
+    password.generatedPwd = password.generatedPwd.concat(criteriaValues[randomIdx]);
+  }
+}
+
+//Computes a random number
 function getRandomNumber(length) {
   return Math.floor(Math.random() * length);
 }
 
+//Gets a random character from the given criteria
 function getRandomChar(criteriaSelected) {
   var randomIdx = getRandomNumber(criteriaSelected.length);
   var criteria = selections[criteriaSelected[randomIdx]];
 
   var charIdx = getRandomNumber(criteria.length);
   return criteria[charIdx];
-}
-
-function useRequiredCriteria(criteriaSelected) {
-  for(var i = 0; i < criteriaSelected.length; i++ ) {
-    var criteriaName = criteriaSelected[i];
-    var selectedCriteria = selections[criteriaName];
-
-    var randomIdx = Math.floor(Math.random() * selectedCriteria.length);
-    password.generatedPwd = password.generatedPwd.concat(selectedCriteria[randomIdx]);
-  }
 }
 
 function getCriteriaSelection() {
@@ -117,14 +128,6 @@ function getCriteriaSelection() {
   }
 
   return selectionsCriteria;
-}
-
-
-function promptPasswordCriteria() {
-  password.hasLowerCase = window.confirm("Password to contain lowercase?");
-  password.hasUpperCase = window.confirm("Password to contain upper case?");
-  password.hasSymbols = window.confirm("Password to contain symbols?");
-  password.hasNumbers = window.confirm("Password to contain numbers?");
 }
 
 // Write password to the #password input
