@@ -6,10 +6,26 @@ var password = {
   hasUpperCase: false,
   hasSymbols: false,
   hasNumbers: false,
-  isValidCriteria: function() {
-    return password.hasLowerCase || password.hasUpperCase || 
-          password.hasSymbols || password.hasNumbers;
+  
+  /**
+   * Checks if user's input of  password length is integer and length is between 8 and 128.
+   */
+  isValidLength: function() {
+    return !isNaN(this.length) && 
+              (this.length >= 8 && this.length <= 128);
   },
+  
+  /**
+   * Checks that user has selected at least one criteria
+   */
+  isValidCriteria: function() {
+    return this.hasLowerCase || this.hasUpperCase || 
+          this.hasSymbols || this.hasNumbers;
+  },
+  
+  /**
+   * Resets primary attributes of the Password object.
+   */
   reset: function() {
     this.generatedPwd = "";
     this.length = 0;
@@ -36,12 +52,13 @@ selections.init();
  * Function to generate password by prompting user a few password criteria
  */
 function generatePassword() {
-  var passwordLength = window.prompt("Enter length of password between 8 and 128");
-  if(!isValidLength(passwordLength)) {
-    return alert(passwordLength + " is not a valid length");
+  //Ask user for password's length
+  password.length = window.prompt("Enter length of password between 8 and 128");
+  if(!password.isValidLength()) {
+    return alert(password.length + " is not a valid length");
   } 
-  password.length = passwordLength;
   
+  //Ask user for password criteria
   promptPasswordCriteria();
   if(!password.isValidCriteria()) {
     return alert("One criteria must be selected");
@@ -110,21 +127,11 @@ function promptPasswordCriteria() {
   password.hasNumbers = window.confirm("Password to contain numbers?");
 }
 
-function isValidLength(passwordLength) {
-  let isNumeric = function() {
-    return !isNaN(passwordLength);
-  }
-
-  return isNumeric(passwordLength) && 
-            (passwordLength >= 8 && passwordLength <= 128);
-}
-
-
 // Write password to the #password input
 function writePassword() {
   password.reset();
   var passwordText = document.querySelector("#password");
-  passwordText.value = password.generatedPwd;
+  passwordText.value = generatePassword();
 }
 
 // Add event listener to generate button
