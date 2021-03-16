@@ -79,7 +79,7 @@ function generatePassword() {
 //Asks user for password crtieria
 function promptPasswordCriteria() {
   password.hasLowerCase = window.confirm("Password to contain lowercase?");
-  password.hasUpperCase = window.confirm("Password to contain upper case?");
+  password.hasUpperCase = window.confirm("Password to contain uppercase?");
   password.hasSymbols = window.confirm("Password to contain symbols?");
   password.hasNumbers = window.confirm("Password to contain numbers?");
 }
@@ -109,6 +109,7 @@ function getRandomChar(criteriaSelected) {
   return criteria[charIdx];
 }
 
+//collects all the criteria names that were selected by user
 function getCriteriaSelection() {
   var selectionsCriteria = [];
   if(password.hasLowerCase) {
