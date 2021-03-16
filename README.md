@@ -6,7 +6,7 @@ This generator also validates that user's input must be an integer between 8 to 
 
 
 ## Application URL
-
+View the deployed application here: https://dianakoeswanto.github.io/password-generator/
 
 
 
